@@ -44,6 +44,34 @@ router.get('/:pin', (request, response, next) => {
         });
 });
 
+// Ordered list of hospitals in that pincode area
+// Called from Android app
+// GET route /hospitals/:pincode
+router.post('/get_hospital', (request, response, next) => {
+    Hospital.find( { pin: request.body.pin })
+        .select('hospitalId name phoneNumber address pin h_latitude h_longitude')
+        .exec()
+        .then(result => {
+            var hospital_coords = [];
+            result.forEach(hospital => {
+                hospital_coords.push({
+                    latitude: hospital.h_latitude,
+                    longitude: hospital.h_longitude
+                });
+            });
+            var my_location = {
+                latitude: request.body.v_latitude,
+                longitude: request.body.v_longitude
+            };
+            var hospital_list = geolib.orderByDistance(my_location,hospital_coords);
+            var ordered_hospital = [];
+            hospital_list.forEach(distance => {
+                ordered_hospital.push(result[distance.key]);
+            })
+            response.status(200).json({ordered_hospital});
+    });
+});
+
 router.post('/', (request, response, next) => {
     const caseId = randomstring.generate();
 

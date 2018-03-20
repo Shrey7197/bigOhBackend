@@ -89,8 +89,8 @@ router.post('/', (request, response, next) => {
             }
         });
 
-        const delete_driver = firebase.database().ref('available_drivers/' + driver_assigned.driver_id);
-        delete_driver.remove();
+        // const delete_driver = firebase.database().ref('available_drivers/' + driver_assigned.driver_id);
+        // delete_driver.remove();
     }));
 });
 
