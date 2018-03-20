@@ -89,9 +89,22 @@ router.post('/', (request, response, next) => {
             }
         });
 
-        const delete_driver = firebase.database().ref('available_drivers/' + driver_assigned.driver_id);
-        delete_driver.remove();
+        // const delete_driver = firebase.database().ref('available_drivers/' + driver_assigned.driver_id);
+        // delete_driver.remove();
     }));
+});
+
+
+
+router.post('/reached_victim', (request, response, next) => {const update_details = firebase.database().ref('active_cases');
+  var caseId = request.body.caseId;
+  var update_d = update_details;
+  update_d.child(caseId).update({
+    "flag" : 1
+  });
+  response.status(200).json({
+    message: "Driver reaced victim location"
+  });
 });
 
 module.exports = router;
