@@ -1,0 +1,6 @@
+{
+  "env": {
+    "DB_PASSWORD": "smartindiauser-dummy-server",
+    "JWT_KEY": "secret"
+  }
+}

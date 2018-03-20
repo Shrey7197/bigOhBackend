@@ -1,11 +1,29 @@
 {
-  "name": "backend",
+  "name": "dummy-node-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "dummy node server for smart india use app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Ramit",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.17.1"
+  },
+  "dependencies": {
+    "array": "^0.4.3",
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "firebase": "^4.11.0",
+    "fs": "0.0.1-security",
+    "geolib": "^2.0.24",
+    "http": "0.0.0",
+    "jsonwebtoken": "^8.2.0",
+    "mongoose": "^5.0.10",
+    "morgan": "^1.9.0",
+    "randomstring": "^1.1.5"
+  }
 }
