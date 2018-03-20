@@ -59,8 +59,22 @@ router.post('/', (request, response, next) => {
                     });
                 });
                 hospital_assigned = arr_hospital[geolib.findNearest(my_location,arr_hospital,0).key];
-                console.log(hospital_assigned);
-                console.log(driver_assigned);
+                const active_case_details = firebase.database().ref('active_cases');
+                var active_case_Ref = active_case_details;
+                active_case_Ref.child(caseId).set({
+                    caseID: caseId,
+                    V_Latitude: my_location.latitude,
+                    V_Longitude: my_location.longitude,
+                    hospital_ID: hospital_assigned.hospital_id,
+                    H_Latitude: hospital_assigned.latitude,
+                    H_Longitude: hospital_assigned.longitude,
+                    pincode: request.body.pin,
+                    driver_ID: driver_assigned.driver_id,
+                    D_Latitude: driver_assigned.latitude,
+                    D_Longitude: driver_assigned.longitude,
+                    type: "Accident",
+                    flag: 0
+                });
                 var reply;
                 reply = {
                     caseId: caseId,
@@ -74,8 +88,8 @@ router.post('/', (request, response, next) => {
 
 
 
-        // const delete_driver = firebase.database().ref('active_drivers/' + driver_assigned.driver_id);
-        // delete_driver.remove();
+        const delete_driver = firebase.database().ref('active_drivers/' + driver_assigned.driver_id);
+        delete_driver.remove();
     }));
 });
 
