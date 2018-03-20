@@ -103,4 +103,22 @@ router.post('/signup', (request, response, next) => {
         })
 });
 
+// DELETE/: hospitals/:hospital_id
+router.delete('/:hospitalId', (request, response, next) => {
+    Hospital.remove({ hospitalId: request.params.hospitalId })
+        .exec()
+        .then(result => {
+            var message = "Hospital deleted";
+            response.status(200).json({
+                message: message
+            });
+        })
+        .catch(error => {
+            response.status(500).json({
+                error: error,
+                message: 'hospital not deleted'
+            });
+        });
+});
+
 module.exports = router;
