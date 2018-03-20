@@ -2,10 +2,10 @@ const firebase = require('firebase');
 
 // Initialize Firebase
 const config = {
-    apiKey: "AIzaSyCE_3VO9mxFbqEcNNnjtCpPHsVCwRjAoQM",
-        authDomain: "locationtracking-43f28.firebaseapp.com",
-        databaseURL: "https://locationtracking-43f28.firebaseio.com",
-        storageBucket: "gs://locationtracking-43f28.appspot.com",
+    apiKey: "AIzaSyD8cHCFsNRTq0E6-fZPX-0lh1jqiXVpsOM",
+    authDomain: "ambulance-tracking-915a0.firebaseapp.com",
+    databaseURL: "https://ambulance-tracking-915a0.firebaseio.com",
+    storageBucket: "ambulance-tracking-915a0.appspot.com",
 }
 
 module.exports = config;

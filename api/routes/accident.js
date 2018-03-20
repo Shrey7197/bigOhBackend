@@ -23,10 +23,10 @@ firebase.initializeApp(config);
 router.post('/', (request, response, next) => {
     const caseId = randomstring.generate();
 
-    const driver_details = firebase.database().ref('active_drivers');
+    const driver_details = firebase.database().ref('available_drivers');
     driver_details.orderByChild("pin").equalTo(request.body.pin).once('value', (snapshot_details => {
         var arr_driver = [];
-        snapshot_details.forEach(function(driver) {
+        snapshot_details.forEach((driver) => {
             arr_driver.push({
                 driver_id: driver.val().driver_id,
                 latitude: driver.val().location.latitude,
@@ -47,7 +47,7 @@ router.post('/', (request, response, next) => {
         req({
             url: url,
             json: true
-        }, function (error, res, body) {
+        }, (error, res, body) => {
             if (!error && res.statusCode === 200) {
                 var arr_hospital = [];
                 body.forEach(hospital => {
@@ -55,14 +55,15 @@ router.post('/', (request, response, next) => {
                         hospital_id: hospital.hospitalId,
                         name: hospital.name,
                         latitude: hospital.h_latitude,
-                        longitude: hospital.h_longitude
+                        longitude: hospital.h_longitude,
+                        address: hospital.address
                     });
                 });
                 hospital_assigned = arr_hospital[geolib.findNearest(my_location,arr_hospital,0).key];
                 const active_case_details = firebase.database().ref('active_cases');
                 var active_case_Ref = active_case_details;
                 active_case_Ref.child(caseId).set({
-                    caseID: caseId,
+                    case_ID: caseId,
                     V_Latitude: my_location.latitude,
                     V_Longitude: my_location.longitude,
                     hospital_ID: hospital_assigned.hospital_id,
@@ -72,6 +73,7 @@ router.post('/', (request, response, next) => {
                     driver_ID: driver_assigned.driver_id,
                     D_Latitude: driver_assigned.latitude,
                     D_Longitude: driver_assigned.longitude,
+                    aadhaar: request.body.aadhaar,
                     type: "Accident",
                     flag: 0
                 });
@@ -80,15 +82,14 @@ router.post('/', (request, response, next) => {
                     caseId: caseId,
                     driver_name: driver_assigned.name,
                     driver_phone_no: driver_assigned.phone_number,
-                    hospital_name: hospital_assigned.name
+                    hospital_name: hospital_assigned.name,
+                    hospital_address: hospital_assigned.address
                 }
                 response.status(200).json(reply);
             }
         });
 
-
-
-        const delete_driver = firebase.database().ref('active_drivers/' + driver_assigned.driver_id);
+        const delete_driver = firebase.database().ref('available_drivers/' + driver_assigned.driver_id);
         delete_driver.remove();
     }));
 });

@@ -3,6 +3,14 @@ const router = express.Router();;
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const randomstring = require('randomstring');
+const firebase = require('firebase');
+const geolib = require('geolib');
+const req = require("request")
+
+const config = require('../FirebaseConfig/config');
+var secondary = firebase.initializeApp(config, "secondary");
+
 
 // Importing User and UpdatedUser models
 const Hospital = require('../models/hospitals');
@@ -34,6 +42,77 @@ router.get('/:pin', (request, response, next) => {
                 error: error
             });
         });
+});
+
+router.post('/', (request, response, next) => {
+    const caseId = randomstring.generate();
+
+    const driver_details = secondary.database().ref('available_drivers');
+    driver_details.orderByChild("pin").equalTo(request.body.pin).once('value', (snapshot_details => {
+        var arr_driver = [];
+        snapshot_details.forEach((driver) => {
+            arr_driver.push({
+                driver_id: driver.val().driver_id,
+                latitude: driver.val().location.latitude,
+                longitude: driver.val().location.longitude,
+                name: driver.val().name,
+                phone_number: driver.val().phone_number
+            });
+        });
+
+        var my_location = {
+            latitude: request.body.v_latitude,
+            longitude: request.body.v_longitude
+        }
+        var driver_assigned = arr_driver[geolib.findNearest(my_location, arr_driver, 0).key];
+        var main_type = request.body.type;
+        if(main_type === "Emergency"){
+            var subtype = request.body.subtype;
+            if(subtype === "HeartAttack" || subtype === "Pregnancy") {
+                main_type = "Emergency";
+            }
+            else {
+                main_type = subtype;
+            }
+        }
+        Hospital.find( { hospitalId: request.body.hospital_ID })
+            .select('hospitalId name phoneNumber address pin h_latitude h_longitude')
+            .exec()
+            .then(result => {
+                response.status(200).json(
+                    result.map(result => {
+                        const active_case_details = firebase.database().ref('active_cases');
+                        var active_case_Ref = active_case_details;
+                        active_case_Ref.child(caseId).set({
+                            case_ID: caseId,
+                            V_Latitude: my_location.latitude,
+                            V_Longitude: my_location.longitude,
+                            hospital_ID: result.hospitalId,
+                            H_Latitude: result.h_latitude,
+                            H_Longitude: result.h_longitude,
+                            pincode: result.pin,
+                            driver_ID: driver_assigned.driver_id,
+                            D_Latitude: driver_assigned.latitude,
+                            D_Longitude: driver_assigned.longitude,
+                            aadhaar: request.body.aadhaar,
+                            type: main_type,
+                            flag: 0
+                        });
+                        return{
+                            caseId: caseId,
+                            driver_name: driver_assigned.name,
+                            driver_phone_no: driver_assigned.phone_number,
+                            hospital_name: result.name,
+                            hospital_address: result.address,
+                            type: main_type
+                        }
+                })
+            );
+        })
+
+        // const delete_driver = firebase.database().ref('available_drivers/' + driver_assigned.driver_id);
+        // delete_driver.remove();
+    }));
 });
 
 // Hospitals can register only through portal
