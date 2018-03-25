@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
+import Home from './Home';
+import Hospital from './Hospital';
+import Police from './Police';
 
 class App extends Component {
   state = {
@@ -23,7 +26,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <p className="App-intro">{this.state.response}</p>
+      {
+        // <p className="App-intro">{this.state.response}</p>
+      }
+
+        <Router>
+           <div>
+
+              <Switch>
+                 <Route exact path='/' component={Home} />
+                 <Route exact path='/hospital' component={Hospital} />
+                 <Route exact path='/police' component={Police} />
+              </Switch>
+           </div>
+        </Router>
+
       </div>
     );
   }

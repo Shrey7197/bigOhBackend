@@ -1,17 +1,17 @@
 Arguments: 
-  /usr/local/Cellar/node/9.8.0/bin/node /Users/shreydhingra/Desktop/big-oh-backend/node_modules/.bin/yarn client
+  /home/pratik/.nvm/versions/node/v9.5.0/bin/node /home/pratik/Documents/SIH/bigOhBackend/node_modules/.bin/yarn server
 
 PATH: 
-  /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/shreydhingra/Desktop/big-oh-backend/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+  /home/pratik/.nvm/versions/node/v9.5.0/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/home/pratik/Documents/SIH/bigOhBackend/node_modules/.bin:/home/pratik/anaconda2/bin:~/anaconda/bin:/home/pratik/.nvm/versions/node/v9.5.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/bin:/home/pratik/go/bin
 
 Yarn version: 
   1.5.1
 
 Node version: 
-  9.8.0
+  9.5.0
 
 Platform: 
-  darwin x64
+  linux x64
 
 npm manifest: 
   {
@@ -64,15 +64,15 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit signal: SIGHUP
+  Exit code: 1
   Command: sh
-  Arguments: -c cd client && yarn start
-  Directory: /Users/shreydhingra/Desktop/big-oh-backend
+  Arguments: -c nodemon server.js
+  Directory: /home/pratik/Documents/SIH/bigOhBackend
   Output:
   
-      at ProcessTermError.MessageError (/Users/shreydhingra/Desktop/big-oh-backend/node_modules/yarn/lib/cli.js:186:110)
-      at new ProcessTermError (/Users/shreydhingra/Desktop/big-oh-backend/node_modules/yarn/lib/cli.js:226:113)
-      at ChildProcess.<anonymous> (/Users/shreydhingra/Desktop/big-oh-backend/node_modules/yarn/lib/cli.js:30281:17)
-      at ChildProcess.emit (events.js:180:13)
-      at maybeClose (internal/child_process.js:936:16)
+      at ProcessTermError.MessageError (/home/pratik/Documents/SIH/bigOhBackend/node_modules/yarn/lib/cli.js:186:110)
+      at new ProcessTermError (/home/pratik/Documents/SIH/bigOhBackend/node_modules/yarn/lib/cli.js:226:113)
+      at ChildProcess.<anonymous> (/home/pratik/Documents/SIH/bigOhBackend/node_modules/yarn/lib/cli.js:30281:17)
+      at ChildProcess.emit (events.js:160:13)
+      at maybeClose (internal/child_process.js:943:16)
       at Process.ChildProcess._handle.onexit (internal/child_process.js:220:5)
