@@ -44,6 +44,11 @@ router.get('/:pin', (request, response, next) => {
         });
 });
 
+
+router.get('/', (request,response) =>{
+    response.send({ exp: 'Hello From Express' });
+})
+
 // Ordered list of hospitals in that pincode area
 // Called from Android app
 // GET route /hospitals/:pincode
